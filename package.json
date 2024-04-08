@@ -1,0 +1,11 @@
+{
+  "name": "decagradetrackr",
+  "version": "1.0.0",
+  "description": "Grade tracker application for displaying student's grades.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Aditya Dixit",
+  "license": "ISC"
+}
