@@ -1,7 +1,32 @@
 import connectDB from "./db/conn.js";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
+import {StudentDetails} from "./models/studentDetails.models.js";
+import express from "express";
+import { upload } from "./middlewares/multer.middleware.js";
+import {app} from "./app.js";
 
-dotenv.config({path:'.env'})
+dotenv.config({ path: ".env" });
 
 
-connectDB()
+//Connecting with MongoDB.
+connectDB() //Async function. Returns a promise handled with .then & .catch methods.
+.then(()=>{
+    //Event listener on "error" event.
+    app.on("error", (error)=>{
+        console.log("ERRR:", error);
+        throw error;
+    })
+    // "app.listen" method is used to start a server and listen for incoming connections on a specified port.
+    app.listen(process.env.PORT || 8000, ()=>{
+        console.log(`Server is running at port ${process.env.PORT }`);
+    })
+})
+.catch((err)=>{
+    console.log('MongoDB connection failed!', err)
+})
+
+
+
+
+
+
