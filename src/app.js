@@ -14,7 +14,13 @@ app.use(cors({
 app.use(express.json({limit : '20kb'})) //Middleware to parse JSON-encoded request bodies and make it available in req.body.Specifies the allowed limit for JSON data.
 app.use(express.urlencoded({extended: true, limit: '20kb'})) //Middleware to parse URL-encoded request bodies.
 app.use(express.static("public")) //Serving static files from a specified directory i.e. app.use(express.static('public')) would serve files from the public directory
-
 app.use(cookieParser()) //It parses cookies attached to the client's request object (req.cookies) and makes them available for use in the application.
+
+//Importing Routes
+import userRouter from "./routes/user.routes.js";
+
+//Routes Declaration
+app.use("/api/v1/users", userRouter) //http://localhost:8000/api/v1/users/register
+
 
 export { app };
