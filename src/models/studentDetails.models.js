@@ -16,31 +16,31 @@ const studentSchema = new mongoose.Schema({
     },
     NSP: {
         type: Number,
-        required: true,
+        default: null,
         min: 0,
         max: 20
     },
     MOOC: {
         type: Number,
-        required: true,
+        default: null,
         min: 0,
         max: 20
     },
     I3: {
         type: Number,
-        required: true,
+        default: null,
         min: 0,
         max: 20
     },
     Assignment: {
         type: Number,
-        required: true,
+        default: null,
         min: 0,
         max: 20
     },
     Total: {
         type: Number,
-        required: true,
+        default: null,
         min: 0,
         max: 80
     }
