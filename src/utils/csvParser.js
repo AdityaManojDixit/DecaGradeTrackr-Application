@@ -1,6 +1,7 @@
 import {promises as fs} from 'fs';
 import assert from 'node:assert';
 import { parse } from 'csv-parse';
+import { ApiError } from './ApiError.js';
 
 // import { fileURLToPath } from 'url';
 // import { dirname } from 'path';
@@ -29,7 +30,7 @@ async function parseCSV(filePath) {
     });
 
     parser.on('error', function(err){
-      console.error("An error occurred while parsing the file.",err.message);
+      throw new ApiError(500, "An error occurred while parsing the file." , err)
     });
 
     await new Promise((resolve,reject)=>{
