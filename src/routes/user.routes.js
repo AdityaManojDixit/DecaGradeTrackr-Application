@@ -6,7 +6,7 @@ import { csvParser } from "../middlewares/csvParser.middleware.js";
 const router = Router()
 
 router.route("/upload").post(
-    upload.single('marks'),
+    upload.single('file'),
     csvParser,
     registerUser
 ) //http://localhost:8000/api/v1/users/upload
@@ -14,6 +14,5 @@ router.route("/upload").post(
 router.route("/fetch").post(
     fetchUserGrades
 )
-
 
 export default router

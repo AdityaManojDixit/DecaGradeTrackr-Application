@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Grades</title>
+    <style>
+      .file-upload-form {
+      width: fit-content;
+      height: fit-content;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      }
+      .file-upload-label input {
+      display: none;
+      }
+      .file-upload-label svg {
+      height: 50px;
+      fill: rgb(82, 82, 82);
+      margin-bottom: 20px;
+      }
+      .file-upload-label {
+      cursor: pointer;
+      background-color: #ddd;
+      padding: 30px 70px;
+      border-radius: 40px;
+      border: 2px dashed rgb(82, 82, 82);
+      box-shadow: 0px 0px 200px -50px rgba(0, 0, 0, 0.719);
+      }
+      .file-upload-design {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      }
+      .browse-button {
+      background-color: rgb(82, 82, 82);
+      padding: 5px 15px;
+      border-radius: 10px;
+      color: white;
+      transition: all 0.3s;
+      }
+      .browse-button:hover {
+      background-color: rgb(14, 14, 14);
+      }
+
+  </style>
+</head>
+<body>
+    <h1>User Grades</h1>
+
+    <form class="file-upload-form">
+        <label for="file" class="file-upload-label">
+          <div class="file-upload-design">
+            <svg viewBox="0 0 640 512" height="1em">
+              <path
+                d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"
+              ></path>
+            </svg>
+            <p>Drag and Drop</p>
+            <p>or</p>
+            <span class="browse-button">Browse file</span>
+          </div>
+          <input id="file" type="file"  onchange="uploadFile()"/>
+        </label>
+    </form>
+
+    <form id="fetch-user-form">
+        <label for="registrationNo">Registration No:</label>
+        <input type="text" id="registrationNo" name="registrationNo" required><br><br>
+        <label for="studentName">Student Name:</label>
+        <input type="text" id="studentName" name="studentName" required><br><br>
+        <button type="submit">Fetch Grades</button>
+    </form>
+    <div id="result-container"></div>
+
+    <script>
+        document.getElementById('fetch-user-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const registrationNo = document.getElementById('registrationNo').value;
+            const studentName = document.getElementById('studentName').value;
+
+            try {
+                const response = await fetch('http://localhost:5500/api/v1/users/fetch', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ registrationNo, studentName })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    displayUserData(data);
+                } else {
+                    displayError(data.message);
+                }
+            } catch (error) {
+                displayError('Failed to fetch data. Please try again later.');
+            }
+        });
+
+        function displayUserData(userData) {
+            const resultContainer = document.getElementById('result-container');
+            resultContainer.innerHTML = `
+                <h2>User Details</h2>
+                <p>ID: ${userData.data.id}</p>
+                <p>Name: ${userData.data.name}</p>
+                <p>NSP: ${userData.data.nsp}</p>
+                <p>MOOC: ${userData.data.mooc}</p>
+                <p>I3: ${userData.data.i3}</p>
+                <p>Assignment: ${userData.data.assign}</p>
+                <p>Total: ${userData.data.total}</p>
+            `;
+        }
+
+        function displayError(message) {
+            const resultContainer = document.getElementById('result-container');
+            resultContainer.innerHTML = `<p>Error: ${message}</p>`;
+        }
+    </script>
+    <script>
+      async function uploadFile() {
+            const fileInput = document.getElementById('file');
+            const file = fileInput.files;
+            
+            const formData = new FormData();
+            formData.append('file', file[0]);
+
+            try {
+                const response = await fetch('http://localhost:5500/api/v1/users/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    res.status(200).send('File uploaded successfully!')
+                    console.log('File uploaded successfully!');
+                    // Do something after successful upload
+                } else {
+                    console.error('Failed to upload file');
+                }
+            } catch (error) {
+                console.error('Error uploading file:', error);
+            }
+        }
+    </script>
+</body>
+</html>
