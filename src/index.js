@@ -1,3 +1,5 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import connectDB from "./db/conn.js";
 import dotenv from "dotenv";
 import {StudentDetails} from "./models/studentDetails.models.js";
@@ -24,6 +26,14 @@ connectDB() //Async function. Returns a promise handled with .then & .catch meth
 .catch((err)=>{
     console.log('MongoDB connection failed!', err)
 })
+
+
+// const root = ReactDOM.createRoot(document.getElementById('root'));
+// root.render(
+//   <React.StrictMode>
+//     <App />
+//   </React.StrictMode>
+// );
 
 
 

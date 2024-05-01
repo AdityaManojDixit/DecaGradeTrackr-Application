@@ -5,11 +5,13 @@ import { csvParser } from "../middlewares/csvParser.middleware.js";
 
 const router = Router()
 
+//Exposed two API Endpoints: /upload and /fetch
+
 router.route("/upload").post(
     upload.single('file'),
     csvParser,
     registerUser
-) //http://localhost:8000/api/v1/users/upload
+)
 
 router.route("/fetch").post(
     fetchUserGrades
